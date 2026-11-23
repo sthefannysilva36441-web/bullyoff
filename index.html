@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bully-OFF</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;700&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E8E2FF;--surf:#fff;--ink:#1B1038;--edge:#1B1038;--pink:#FF4F9A;--lime:#B8F23C;--blue:#3B6BFF;--sun:#FFD23F;--mut:#53487A;--g1:#FFB3D6;--g2:#BFD0FF;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#150C2E;--surf:#261650;--ink:#F3EEFF;--edge:#050211;--mut:#B9AEE0;--g1:#4A1B5E;--g2:#1E2F7A}}
+:root[data-theme="dark"]{--bg:#150C2E;--surf:#261650;--ink:#F3EEFF;--edge:#050211;--mut:#B9AEE0;--g1:#4A1B5E;--g2:#1E2F7A}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;color:var(--ink);font:400 1.05rem/1.55 Nunito,system-ui,sans-serif;background:radial-gradient(circle at 0 0,var(--g1),transparent 45%),radial-gradient(circle at 100% 30%,var(--g2),transparent 45%),var(--bg);background-attachment:fixed;min-height:100%}
+h1,h2,h3{font-family:Fredoka,Nunito,system-ui,sans-serif;line-height:1.1;margin:0 0 .5em}
+h1{font-size:clamp(3rem,16vw,6rem);letter-spacing:-.02em}h2{font-size:clamp(1.8rem,7vw,2.6rem)}h3{font-size:1.25rem}
+p{margin:0 0 1em;max-width:60ch}
+:focus-visible{outline:4px solid var(--sun);outline-offset:2px}
+main{max-width:760px;margin:0 auto;padding:1.5rem 1.1rem 7.5rem}
+.view[hidden]{display:none}
+.view{animation:in .35s ease}
+@keyframes in{from{opacity:0;transform:translateY(12px)}}
+.card{background:var(--surf);border:3px solid var(--edge);border-radius:20px;box-shadow:6px 6px 0 var(--edge);padding:1.2rem;margin:0 0 1.4rem}
+.btn{display:inline-block;border:3px solid var(--edge);border-radius:14px;padding:.7rem 1.1rem;font:800 1rem Nunito,sans-serif;cursor:pointer;text-decoration:none;background:var(--sun);color:#1B1038;box-shadow:4px 4px 0 var(--edge);transition:transform .1s,box-shadow .1s}
+.btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--edge)}
+.btn.p{background:var(--pink)}.btn.l{background:var(--lime)}.btn.b{background:var(--blue);color:#fff}
+.row{display:flex;flex-wrap:wrap;gap:.8rem}
+.tag{display:inline-block;background:var(--lime);color:#1B1038;border:2px solid var(--edge);border-radius:99px;padding:.1rem .8rem;font-weight:800;font-size:.9rem;margin-bottom:.8rem}
+.sw{display:flex;align-items:center;gap:1rem;border:0;background:none;color:var(--ink);cursor:pointer;padding:0;margin:1rem 0 1.5rem;font:800 1.1rem Nunito,sans-serif;text-align:left}
+.track{width:124px;height:64px;border-radius:99px;border:3px solid var(--edge);background:var(--pink);position:relative;flex:none;transition:background .3s;box-shadow:4px 4px 0 var(--edge)}
+.knob{position:absolute;top:5px;left:5px;width:48px;height:48px;border-radius:50%;background:#fff;border:3px solid var(--edge);transition:transform .35s cubic-bezier(.5,1.6,.5,1)}
+.sw[aria-checked="true"] .track{background:var(--lime)}
+.sw[aria-checked="true"] .knob{transform:translateX(60px)}
+.opt{display:block;width:100%;text-align:left;margin:.6rem 0;background:var(--bg);color:var(--ink);border:3px solid var(--edge);border-radius:14px;padding:.8rem 1rem;font:700 1rem Nunito,sans-serif;cursor:pointer}
+.opt:disabled{cursor:default}.opt.k{background:var(--lime);color:#1B1038}.opt.x{background:var(--pink);color:#1B1038}
+.fb{margin-top:.8rem;padding:.8rem 1rem;border-radius:14px;background:var(--bg);border:2px dashed var(--edge)}
+.xp{height:22px;border:3px solid var(--edge);border-radius:99px;background:var(--bg);overflow:hidden;margin:.4rem 0 .5rem}
+.xp i{display:block;height:100%;width:0;background:var(--pink);transition:width .6s}
+.badges{display:flex;gap:.6rem;flex-wrap:wrap}
+.bd{border:3px solid var(--edge);border-radius:14px;padding:.3rem .7rem;font-weight:800;background:var(--bg);opacity:.45;filter:grayscale(1)}
+.bd.on{opacity:1;filter:none;background:var(--sun);color:#1B1038}
+.deck{text-align:center}
+.deck .q{font:700 1.5rem/1.25 Fredoka,sans-serif;min-height:7.5rem;display:flex;align-items:center;justify-content:center}
+.deck.sh{animation:sh .4s}
+@keyframes sh{20%{transform:translateX(-10px) rotate(-1deg)}60%{transform:translateX(10px) rotate(1deg)}}
+.air{width:150px;height:150px;border-radius:50%;margin:1rem auto;background:var(--blue);border:3px solid var(--edge);display:grid;place-items:center;color:#fff;font:700 1.2rem Fredoka,sans-serif;transform:scale(.6);transition:transform 4s ease-in-out}
+.air.in{transform:scale(1.15)}
+label{display:block;font-weight:800;margin:1rem 0 .3rem}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:3px solid var(--edge);border-radius:12px;padding:.65rem .8rem}
+.bar{display:grid;grid-template-columns:6.5rem 1fr 2.6rem;gap:.5rem;align-items:center;margin:.4rem 0;font-size:.95rem}
+.bar i{display:block;height:16px;border-radius:8px;border:2px solid var(--edge);background:var(--blue);transition:width .5s}
+.note{color:var(--mut);font-size:.9rem}
+#tabs{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;background:var(--surf);border-top:3px solid var(--edge);padding:.35rem .3rem calc(env(safe-area-inset-bottom,0px) + .35rem)}
+#tabs a{flex:1;min-width:0;white-space:nowrap;text-align:center;text-decoration:none;color:var(--ink);font:800 .62rem Nunito,sans-serif;padding:.3rem 0;border-radius:12px}
+#tabs a b{display:block;font-size:1.35rem;line-height:1.2}
+#tabs a[aria-current="page"]{background:var(--sun);color:#1B1038}
+#tabs a.h{color:var(--pink)}#tabs a.h[aria-current="page"]{color:#1B1038}
+#tabs a.s{opacity:.7}details.card summary{cursor:pointer;font:700 1.15rem Fredoka,sans-serif}details.card p{margin:.8rem 0 0}.mural{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:.9rem;margin-top:1rem}.pst{padding:.9rem;border:3px solid var(--edge);border-radius:6px;font-weight:700;color:#1B1038;box-shadow:3px 3px 0 var(--edge);min-height:90px;overflow-wrap:anywhere}.pst:nth-child(4n+1){background:var(--sun);transform:rotate(-1.5deg)}.pst:nth-child(4n+2){background:var(--lime);transform:rotate(1deg)}.pst:nth-child(4n+3){background:var(--pink);transform:rotate(-.5deg)}.pst:nth-child(4n){background:#9CC2FF;transform:rotate(1.5deg)}.big{display:block;width:100%;text-align:left;font-size:1.15rem;padding:1rem 1.1rem;margin:0 0 1rem}.big small{display:block;font-weight:700;font-size:.9rem;opacity:.85}.chk{display:flex;gap:.7rem;align-items:center;margin:.5rem 0;font-weight:700}.chk input{width:1.5rem;height:1.5rem;flex:none}.swap{display:block;width:100%;text-align:left;margin:.5rem 0;border:3px solid var(--edge);border-radius:14px;padding:.8rem 1rem;background:var(--bg);color:var(--ink);font:700 1rem Nunito,sans-serif;cursor:pointer}.swap.on{background:var(--lime);color:#1B1038}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<main>
+<section class="view" id="v-inicio">
+<h1>Bully-<span style="color:var(--pink)">OFF</span></h1>
+<p>Você não está sozinho. Aqui você respira, pede ajuda e conta o que está acontecendo, com cuidado e sem se expor.</p><a class="btn big b" href="#respirar">🌬️ Preciso respirar<small>Exercício rápido para acalmar</small></a><a class="btn big p" href="#denunciar">📢 Quero denunciar<small>Conte à escola, em privado</small></a><a class="btn big" href="#ajuda">🆘 Ajuda e contatos<small>Quem procurar agora</small></a>
+<button class="sw" id="sw" role="switch" aria-checked="false"><span class="track"><span class="knob"></span></span><span id="swt">Bullying: LIGADO.<br>Toque para desligar</span></button>
+<div class="card"><span class="tag">Meu compromisso</span><h3>Escolha o seu e vire Bully-OFF</h3><div id="pl"></div><div id="pc"></div></div>
+<a class="btn big" href="#adultos">👨‍🏫 Para professores e pais<small>Trilha de orientação passo a passo</small></a>
+<p class="note">Quer treinar o olhar? <a href="#jogos" style="color:inherit;font-weight:800">Veja os jogos</a>.</p>
+</section>
+
+<section class="view" id="v-respirar" hidden>
+<h2>Respirar</h2>
+<p>Se estiver nervoso, com medo ou chateado, vá com calma. Acompanhe o círculo por alguns minutos.</p>
+<div class="card"><div class="air" id="air">Pronto?</div><p style="text-align:center"><button class="btn l" id="ab">Respirar comigo</button></p><p class="note" style="text-align:center">Inspire enquanto o círculo cresce e solte o ar quando ele diminuir.</p></div>
+<div class="card"><h3>Volte ao presente: 5-4-3-2-1</h3><p>Olhe ao redor e perceba:</p><p>5 coisas que você vê<br>4 coisas que você ouve<br>3 coisas que você toca<br>2 cheiros que você sente<br>1 coisa boa sobre você</p></div>
+<div class="card"><h3>Depois de se acalmar</h3><p>Conversar ajuda. Procure um adulto de confiança ou conte à escola.</p><a class="btn p" href="#denunciar">📢 Contar à escola</a></div>
+</section>
+<section class="view" id="v-adultos" hidden>
+<h2>Para professores e pais</h2>
+<p>Uma trilha curta para reconhecer, conversar e agir. Escolha o seu papel:</p>
+<div class="row" style="margin-bottom:1.2rem"><button class="btn b" data-r="pf">Professores</button><button class="btn p" data-r="pa">Pais e responsáveis</button></div>
+<div id="ad"></div>
+<p class="note">Referências: Lei 13.185/2015 (combate à intimidação sistemática) e Lei 14.811/2024. Em caso de violência ou ameaça, procure a direção da escola e, se necessário, o Conselho Tutelar ou o Disque 100.</p>
+</section>
+<section class="view" id="v-sobre" hidden>
+<h2>Sobre nós</h2>
+<div class="card"><span class="tag">O projeto</span><h3>O que é o Bully-OFF</h3><p>O Bully-OFF é um site de conscientização feito por estudantes para ajudar a comunidade escolar a reconhecer, enfrentar e prevenir o bullying.</p><h3>O problema que queremos resolver</h3><p>Muitos alunos sofrem ou presenciam bullying, mas não pedem ajuda por medo de exposição, represálias ou por não saberem como agir.</p><h3>Nossa proposta</h3><p>Reunir em um só lugar orientação, acolhimento e informação: exercícios para se acalmar, um canal privado para contar à escola, conteúdos para famílias e professores e atividades que incentivam o respeito. O site não funciona como mural de acusações: ninguém é exposto.</p></div>
+<div class="card"><span class="tag">Quem fez</span><h3>Integrantes do grupo</h3><p>Larissa Matias<br>Maria Sthefanny<br>Alana Roberta<br>Sthefany dos Reis<br>Kezia Rodrigues</p><h3>Professor</h3><p>Francisco Henrique</p><h3>Turma</h3><p>300INT</p></div>
+</section>
+<section class="view" id="v-jogos" hidden>
+<h2>Jogos</h2><p>Treine o olhar e a empatia de um jeito leve.</p>
+<a class="btn big l" href="#identificar">🔍 Bullying ou não?<small>Cartas rápidas</small></a>
+<a class="btn big l" href="#missoes">🎮 Missões<small>Histórias com escolhas</small></a>
+</section>
+<section class="view" id="v-identificar" hidden>
+<h2>Bullying ou não?</h2>
+<p>Decida rápido. Quantas situações você identifica certo?</p>
+<div class="card deck" id="deck"></div>
+</section>
+
+<section class="view" id="v-missoes" hidden>
+<h2>Missões</h2>
+<div class="card"><h3>Seu nível de empatia</h3><div class="xp"><i id="xpb"></i></div><p class="note" id="xpt"></p><div class="badges" id="bds"></div></div>
+<div id="ms"></div>
+</section>
+
+<section class="view" id="v-ajuda" hidden>
+<h2>Preciso de ajuda</h2>
+<a class="btn big b" href="#respirar">🌬️ Preciso respirar primeiro</a><a class="btn big p" href="#denunciar">📢 Quero denunciar</a>
+<div class="card"><h3>O que fazer agora</h3>
+<p>Você não tem culpa do que está acontecendo.</p>
+<p>Afaste-se e fique perto de colegas ou de um adulto.</p>
+<p>Conte a alguém de confiança: família, professor ou orientação.</p>
+<p>Guarde provas, como prints, sem responder à agressão.</p></div>
+<div class="card"><h3>Quem procurar</h3>
+<p><strong>Orientação da escola:</strong> [preencher sala e horário]<br><strong>Coordenação:</strong> [preencher contato]</p>
+<p><strong>Disque 100:</strong> denúncias de violações de direitos, gratuito.<br><strong>CVV 188:</strong> apoio emocional, 24 horas.<br>Em perigo imediato, fale com um adulto agora ou ligue 190.</p></div>
+</section>
+
+<section class="view" id="v-denunciar" hidden>
+<h2>Denunciar</h2>
+<p>Sua denúncia vai só para a equipe da escola, em privado. Nada é publicado e nenhum colega vê. Você pode não colocar seu nome.</p>
+<form class="card" id="form">
+<label for="nome">Seu nome (opcional)</label><input id="nome" autocomplete="off">
+<label for="turma">Turma</label><input id="turma" autocomplete="off">
+<label for="tipo">O que está acontecendo?</label><select id="tipo"><option>Xingamentos ou apelidos</option><option>Agressão física</option><option>Exclusão ou isolamento</option><option>Ameaças</option><option>Cyberbullying (internet ou celular)</option><option>Outro</option></select><label for="onde">Onde acontece?</label><input id="onde" placeholder="Ex.: sala, pátio, grupo de WhatsApp" autocomplete="off"><label for="como">Como prefere ser atendido?</label>
+<select id="como"><option>Conversa pessoal</option><option>Com um responsável presente</option><option>Por mensagem</option></select>
+<label for="msg">Conte o que aconteceu (e quem estava envolvido, se quiser)</label><textarea id="msg" rows="4"></textarea>
+<p style="margin-top:1rem"><button class="btn p" type="submit">Enviar denúncia</button></p>
+<p class="note" id="fnote"></p>
+</form>
+</section>
+
+<section class="view" id="v-respeito" hidden>
+<h2>Termômetro do respeito</h2>
+<div class="card" id="poll"></div>
+<div class="card"><span class="tag">Semana do respeito</span><h3>Um desafio por dia</h3><div id="wk"></div></div>
+<div class="card"><span class="tag">Fale de outro jeito</span><h3>Toque na frase que machuca</h3><div id="rw"></div></div>
+<div class="card"><span class="tag">Combinados da turma</span><h3>Respeito na prática</h3><p>Converse com a turma e marquem o que vocês combinam:</p><div id="cb"></div></div>
+<div class="card"><span class="tag">Mural do elogio</span><h3>Deixe uma palavra boa</h3><p class="note">Sem nomes e sem ofensas. Escreva algo que anime a turma.</p><textarea id="mt" rows="2" maxlength="120" placeholder="Ex.: Hoje a turma foi demais!"></textarea><p style="margin:.8rem 0"><button class="btn l" id="mb">Colar no mural</button></p><p class="note" id="mn2"></p><div id="mu" class="mural"></div></div>
+</section>
+</main>
+<nav id="tabs" aria-label="Seções">
+<a href="#inicio"><b>🏠</b>Início</a><a href="#respirar" class="h"><b>🌬️</b>Respirar</a><a href="#denunciar" class="h"><b>📢</b>Denunciar</a><a href="#ajuda" class="h"><b>🆘</b>Ajuda</a><a href="#respeito"><b>📊</b>Respeito</a><a href="#jogos" class="s"><b>🎮</b>Jogos</a><a href="#sobre" class="s"><b>👥</b>Sobre nós</a>
+</nav>
+<script>
+const $=s=>document.querySelector(s),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const names=['inicio','respirar','denunciar','ajuda','respeito','jogos','identificar','missoes','adultos','sobre'];
+function route(){let n=location.hash.slice(1);if(!names.includes(n))n='inicio';document.querySelectorAll('.view').forEach(v=>v.hidden=v.id!=='v-'+n);document.querySelectorAll('#tabs a').forEach(a=>a.setAttribute('aria-current',a.hash==='#'+n||(a.hash==='#jogos'&&(n==='identificar'||n==='missoes'))||(a.hash==='#ajuda'&&n==='adultos')?'page':'false'));scrollTo(0,0)}
+addEventListener('hashchange',route);route();
+function boom(){if(RM)return;const e=['🎉','✨','💚','🛡️','⭐'];for(let i=0;i<28;i++){const s=document.createElement('span');s.textContent=e[i%5];s.style.cssText='position:fixed;z-index:50;pointer-events:none;font-size:1.6rem;left:50%;top:45%';document.body.append(s);const a=Math.random()*6.28,d=120+Math.random()*180;s.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d+90}px) rotate(${Math.random()*360}deg)`,opacity:0}],{duration:1100,easing:'ease-out'}).onfinish=()=>s.remove()}}
+const ld=(k,d)=>{try{const s=localStorage.getItem(k);return s?JSON.parse(s):d}catch(_){return d}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(_){}};
+
+const sw=$('#sw');sw.onclick=()=>{const on=sw.getAttribute('aria-checked')!=='true';sw.setAttribute('aria-checked',on);$('#swt').innerHTML=on?'Bullying: DESLIGADO.<br>Começa com a gente!':'Bullying: LIGADO.<br>Toque para desligar';if(on)boom()};
+
+const P=['Vou incluir quem estiver sozinho','Não vou rir de piada que machuca','Vou pedir ajuda quando precisar','Vou apoiar quem sofre bullying'];
+$('#pl').innerHTML=P.map((p,i)=>`<button class="opt" data-i="${i}">${p}</button>`).join('');
+$('#pl').onclick=e=>{const b=e.target.closest('.opt');if(!b)return;$('#pc').innerHTML=`<div class="card" style="background:var(--lime);color:#1B1038;margin:1rem 0 0;text-align:center"><h3>🛡️ Eu sou Bully-OFF</h3><p style="margin:0 auto">${P[b.dataset.i]}.</p></div>`;boom()};
+
+const D=[
+{t:'Apelidos que o colega já pediu para parar, usados todo dia.',b:1,e:'Repetição e ignorar o “para” é bullying.'},
+{t:'Dois amigos discutem por causa de um jogo e fazem as pazes.',b:0,e:'Conflito pontual entre iguais. Não é bullying, mas vale conversar.'},
+{t:'Fazem meme de uma colega e mandam no grupo da turma.',b:1,e:'Cyberbullying: a exposição machuca e se espalha rápido.'},
+{t:'Um colega recusa seu convite para o trabalho em grupo.',b:0,e:'Dizer “não” faz parte. Bullying é agredir ou excluir de propósito, repetidamente.'},
+{t:'Ninguém senta com um aluno no refeitório há semanas, de propósito.',b:1,e:'Exclusão social também é bullying, mesmo sem uma palavra.'},
+{t:'Empurrões e ameaças no corredor toda semana, com plateia.',b:1,e:'Bullying físico e psicológico. A plateia pode ajudar a parar.'}];
+let di=0,dp=0,ds=0;
+function dshow(){const k=$('#deck');if(di>=D.length){k.innerHTML=`<h3>Você acertou ${dp} de ${D.length}</h3><p style="margin:0 auto 1rem">${dp>=5?'Olhar de águia! Agora encare as Missões.':'Tente de novo e depois jogue as Missões.'}</p><button class="btn l" id="dr">Jogar de novo</button>`;if(dp>=5)boom();$('#dr').onclick=()=>{di=dp=ds=0;dshow()};return}
+k.innerHTML=`<span class="tag">${di+1}/${D.length} · sequência ${ds}🔥</span><div class="q">${D[di].t}</div><div class="row" style="justify-content:center"><button class="btn p" data-v="1">🚨 Bullying</button><button class="btn l" data-v="0">🤝 Tranquilo</button></div><div class="fb" hidden></div>`}
+$('#deck').onclick=e=>{const b=e.target.closest('[data-v]');if(!b){if(e.target.id==='dn'){di++;dshow()}return}const c=D[di],ok=(+b.dataset.v===c.b),k=$('#deck');ok?(dp++,ds++):(ds=0,RM||(k.classList.remove('sh'),void k.offsetWidth,k.classList.add('sh')));k.querySelectorAll('[data-v]').forEach(x=>x.disabled=true);const f=k.querySelector('.fb');f.hidden=false;f.innerHTML=`<strong>${ok?'Acertou!':'Quase!'}</strong> ${c.e}<br><button class="btn b" id="dn" style="margin-top:.7rem">Próxima</button>`};
+dshow();
+
+const M=[
+{n:'Print no grupo',e:'📱',s:[
+{t:'Alguém posta no grupo da turma uma foto editada de um colega, e os risos começam. O que você faz?',c:[['Mando 😂 para não ficar de fora',0,'Rir alimenta a ofensa e deixa o colega ainda mais sozinho.'],['Fico quieto e saio do grupo',1,'Sair te protege, mas o colega continua exposto.'],['Peço para apagarem e chamo o colega no privado',3,'Isso! Você corta a graça da agressão e acolhe quem foi atingido.']]},
+{t:'O colega responde: “tá tudo bem, deixa pra lá”, mas está claramente chateado. E agora?',c:[['Deixo pra lá, ele pediu',1,'Respeitar é bom, mas quem sofre costuma dizer isso por medo. Fique por perto.'],['Salvo os prints e levo para a orientação, com ele',3,'Perfeito: provas guardadas e apoio de um adulto, com o colega junto.'],['Respondo a quem postou com xingamentos',0,'Revidar vira outra agressão e pode te colocar em problemas.']]}]},
+{n:'Intervalo tenso',e:'🥪',s:[
+{t:'No intervalo, um grupo bloqueia o caminho de um aluno novo e tira sarro do sotaque dele.',c:[['Passo direto, não é comigo',0,'Quem assiste e se afasta deixa a situação continuar.'],['Chamo o aluno novo para sentar comigo',3,'Incluir é o antídoto. Um gesto simples muda o dia de alguém.'],['Filmo para postar depois',0,'Expor ainda mais é cyberbullying e piora tudo.']]},
+{t:'Um dos garotos do grupo diz: “foi só brincadeira, relaxa”. Você responde…',c:[['“Se ele não riu, não foi brincadeira”',3,'Boa! Brincadeira de verdade diverte todo mundo, inclusive o alvo.'],['Ignoro para evitar briga',1,'Evitar briga é válido, mas um adulto precisa saber.'],['“Verdade, ele é sensível mesmo”',0,'Culpar quem sofre protege quem agride.']]}]}];
+let best=ld('bo-best',[0,0]),mi=-1,si=0,mp=0;
+const BD=[['🌱 Observador',3],['🛡️ Aliado',7],['🦸 Herói da turma',11]];
+function xpShow(){const t=best[0]+best[1];$('#xpb').style.width=Math.round(t/12*100)+'%';$('#xpt').textContent=t+' de 12 pontos de empatia';$('#bds').innerHTML=BD.map(b=>`<span class="bd ${t>=b[1]?'on':''}">${b[0]}</span>`).join('')}
+function mshow(){const k=$('#ms');xpShow();if(mi<0){k.innerHTML=M.map((m,i)=>`<div class="card"><h3>${m.e} ${m.n}</h3><p>Melhor resultado: ${best[i]} de 6 pontos</p><button class="btn b" data-m="${i}">${best[i]?'Jogar de novo':'Começar missão'}</button></div>`).join('');return}
+const m=M[mi];if(si>=m.s.length){if(mp>best[mi]){best[mi]=mp;sv('bo-best',best)}xpShow();if(mp>=5)boom();k.innerHTML=`<div class="card"><h3>${m.e} Missão concluída!</h3><p>Você fez ${mp} de 6 pontos. ${mp>=5?'Aliado de verdade!':'Tente outro caminho e veja o que muda.'}</p><button class="btn l" data-m="${mi}">Jogar de novo</button> <button class="btn" data-back="1">Outras missões</button></div>`;return}
+const s=m.s[si];k.innerHTML=`<div class="card"><span class="tag">${m.e} ${m.n} · passo ${si+1}/${m.s.length}</span><h3>${s.t}</h3>${s.c.map((c,i)=>`<button class="opt" data-c="${i}">${c[0]}</button>`).join('')}<div class="fb" hidden></div></div>`}
+$('#ms').onclick=e=>{const b=e.target.closest('button');if(!b)return;const d=b.dataset;if(d.m!==undefined){mi=+d.m;si=0;mp=0;mshow()}else if(d.back){mi=-1;mshow()}else if(d.c!==undefined){const c=M[mi].s[si].c[+d.c],k=$('#ms');k.querySelectorAll('.opt').forEach(x=>x.disabled=true);b.classList.add(c[1]>=3?'k':c[1]===0?'x':'');if(c[1]>=3)b.classList.add('k');mp+=c[1];const f=k.querySelector('.fb');f.hidden=false;f.innerHTML=`<strong>+${c[1]} ponto${c[1]===1?'':'s'}.</strong> ${c[2]}<br><button class="btn b" id="mn" style="margin-top:.7rem">Continuar</button>`}else if(b.id==='mn'){si++;mshow()}};
+mshow();
+
+let br=null;$('#ab').onclick=()=>{const a=$('#air');if(br){clearInterval(br);br=null;a.classList.remove('in');a.textContent='Pronto?';$('#ab').textContent='Respirar comigo';return}
+$('#ab').textContent='Parar';let on=true;const t=()=>{a.classList.toggle('in',on);a.textContent=on?'Inspire':'Solte o ar';on=!on};t();br=setInterval(t,4000)};
+
+$('#form').onsubmit=e=>{e.preventDefault();const to='orientacao@suaescola.edu.br',body=`Nome: ${$('#nome').value||'(não informado)'}\nTurma: ${$('#turma').value}
+Tipo: ${$('#tipo').value}
+Onde: ${$('#onde').value}\nPrefere: ${$('#como').value}\n\n${$('#msg').value}`;location.href='mailto:'+to+'?subject='+encodeURIComponent('Denúncia - Bully-OFF')+'&body='+encodeURIComponent(body);$('#fnote').textContent='Abrimos seu e-mail para enviar a denúncia à equipe da escola.'};
+
+const pq=[['seg','Eu me sinto seguro(a) na escola.'],['res','Os colegas se respeitam na minha turma.'],['aju','Eu sei a quem pedir ajuda se precisar.'],['inc','Eu me sinto incluído(a) na minha turma.'],['aj2','Já vi alguém sofrer bullying e tentei ajudar.']],L=['Discordo','Às vezes','Concordo'];
+let votes=ld('bo-votes',{});pq.forEach(p=>{votes[p[0]]=votes[p[0]]||[0,0,0]});
+function pshow(){$('#poll').innerHTML=pq.map(p=>{const v=votes[p[0]],t=v.reduce((a,b)=>a+b,0)||1;return`<h3>${p[1]}</h3><div class="row">${L.map((l,i)=>`<button class="btn" data-k="${p[0]}" data-i="${i}">${l}</button>`).join('')}</div>`+L.map((l,i)=>`<div class="bar"><span>${l}</span><i style="width:${Math.round(v[i]/t*100)}%"></i><span>${Math.round(v[i]/t*100)}%</span></div>`).join('')}).join('<hr style="border:0;border-top:3px dashed var(--edge);margin:1.4rem 0">')+'<p class="note">Respostas anônimas. Neste protótipo, os resultados ficam só neste aparelho.</p>'}
+$('#poll').onclick=e=>{const b=e.target.closest('button');if(!b)return;votes[b.dataset.k][+b.dataset.i]++;sv('bo-votes',votes);pshow()};
+function chk(id,arr,key){let s=ld(key,[]);const el=$(id);el.innerHTML=arr.map((t,i)=>`<label class="chk"><input type="checkbox" data-i="${i}" ${s[i]?'checked':''}>${t}</label>`).join('');el.onchange=e=>{s[+e.target.dataset.i]=e.target.checked;sv(key,s);if(s.filter(Boolean).length===arr.length)boom()}}
+chk('#wk',['Segunda: cumprimente alguém com quem você quase não fala','Terça: faça um elogio sincero a um colega','Quarta: convide alguém para o seu grupo','Quinta: escute alguém até o fim, sem interromper','Sexta: agradeça a um funcionário da escola'],'bo-wk');
+chk('#cb',['Não rir do que machuca','Não compartilhar prints ou fotos que expõem alguém','Ouvir o outro antes de julgar','Avisar um adulto quando alguém precisar de ajuda','Pedir desculpas de verdade quando errar'],'bo-cb');
+const W=[['“Que desastre você, hein.”','“Calma, todo mundo erra. Posso ajudar?”'],['“Ninguém te chamou.”','“Chega aí, tem espaço pra você.”'],['“Foi só brincadeira.”','“Desculpa, não quis te magoar.”'],['“Para de ser fresco.”','“Percebi que você está mal. Quer conversar?”']];
+$('#rw').innerHTML=W.map((w,i)=>`<button class="swap" data-i="${i}">${w[0]}</button>`).join('');
+$('#rw').onclick=e=>{const b=e.target.closest('.swap');if(!b)return;const w=W[b.dataset.i],on=b.classList.toggle('on');b.textContent=on?'💚 '+w[1]:w[0]};
+const MU0=['Você é mais forte do que imagina.','Obrigado(a) por ouvir quem estava mal hoje.','Nossa turma fica melhor quando todo mundo cabe.'];
+let mu=ld('bo-mural',[]);
+function mush(){const g=$('#mu');g.innerHTML='';[...mu,...MU0].forEach(t=>{const d=document.createElement('div');d.className='pst';d.textContent=t;g.append(d)})}
+$('#mb').onclick=()=>{const v=$('#mt').value.trim(),m=$('#mn2');if(v.length<4){m.textContent='Escreva uma mensagem um pouco maior.';return}if(/https?:|www\.|@/i.test(v)){m.textContent='Não use links ou @ no mural.';return}mu=[v,...mu].slice(0,12);sv('bo-mural',mu);$('#mt').value='';m.textContent='Mensagem colada! Neste protótipo, ela aparece só neste aparelho.';mush();boom()};
+mush();
+const A={pf:[['Reconheça os sinais','Isolamento, queda nas notas, faltas frequentes, material “perdido”, evitar o intervalo, mudanças bruscas de humor e queixas de dor sem causa.'],['Aja na hora','Intervenha com calma e firmeza, separe os envolvidos e acolha primeiro quem foi atingido. Não exponha o aluno diante da turma e não peça que “se resolvam sozinhos”.'],['Converse em separado','Ouça cada aluno em particular, sem confronto direto entre vítima e agressor. Registre o que foi dito, com data, e avise a coordenação.'],['Envolva as famílias','Chame os responsáveis de cada lado em conversas separadas, explique o que aconteceu e combine o acompanhamento.'],['Previna na rotina','Faça rodas de conversa, trabalhe empatia nas aulas, crie combinados com a turma e deixe claro como pedir ajuda. Este site pode ser um apoio.']],pa:[['Observe os sinais','Não quer ir à escola, tristeza ou irritação sem motivo, dores frequentes, objetos sumindo, isolamento e ansiedade com o celular.'],['Converse sem julgar','Escolha um momento calmo, pergunte abertamente e escute até o fim. Agradeça a confiança e diga que a culpa não é dele(a). Evite frases como “revida” ou “isso é bobagem”.'],['Guarde provas e procure a escola','Salve prints e anote datas. Procure a coordenação, de preferência por escrito, e peça um plano de acompanhamento.'],['Cuide da saúde emocional','Fique atento a mudanças fortes de comportamento e busque apoio psicológico se precisar. Em momentos de crise, o CVV (188) atende 24 horas.'],['Se seu filho(a) agride','Converse sem humilhar, procure entender os motivos, combine consequências e mostre como reparar o erro. Acompanhe junto com a escola.']]};
+let ar='pf';
+function adsh(){$('#ad').innerHTML=A[ar].map((s,i)=>`<details class="card" ${i?'':'open'}><summary>Passo ${i+1}: ${s[0]}</summary><p>${s[1]}</p></details>`).join('')}
+$('#v-adultos').onclick=e=>{const b=e.target.closest('[data-r]');if(b){ar=b.dataset.r;adsh()}};
+adsh();
+pshow();
+</script>
+</body>
+</html>
